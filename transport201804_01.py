@@ -49,7 +49,6 @@ class Data(object):
         print(counts)
         print('\r')
 
-
     def average(self, object_name):
         sum = 0
         cou = 0
@@ -72,7 +71,6 @@ class Data(object):
         self.data[object_name] = self.data[object_name].apply(lambda x: math.log(x))
 
 
-
 trdata = Data(example_tr)
 trdata.items = len(trdata.data)
 trdata.num_cols = trdata.cols_in_type('num')
@@ -87,13 +85,10 @@ trdata.num_cols.remove('A')
 for i in trdata.num_cols:
     if trdata.count(i) != trdata.items:
         trdata.data[i] = trdata.data[i].fillna(trdata.average(i))
-    # tedata.print_count(i)
     if tedata.count(i) != tedata.items:
         tedata.data[i] = tedata.data[i].fillna(trdata.average(i))
-    # tedata.print_count(i)
     # trdata.normalize(i)
     # tedata.normalize(i)
-    # tedata.print_count(i)
 
 # 非数值型列没有空值，只需要转化为one-hot形式即可=========================
 trdata.combine = pd.concat([trdata.data, tedata.data])
