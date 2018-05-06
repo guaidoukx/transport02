@@ -6,6 +6,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.cross_validation import KFold
 from keras.layers.core import Dense
 from keras.models import Sequential
+# from compiler import flatten
 
 example_trn = pd.read_csv('IO/test_after_n.csv')
 example_ten = pd.read_csv('IO/test_after_n.csv')
@@ -94,7 +95,7 @@ class ReadData(object):
         # self.y_true.append(te_y)
         # self.y_pred.append(te_pred)
         # return self.y_true, self.y_pred
-        return te_y, te_pred
+        return te_y.tolist(), te_pred.flatten().tolist()
 
 trdata = ReadData(example_trn, 'A')
 trdata.overall = len(trdata.data)
@@ -104,10 +105,13 @@ trdata.D = {-1:([],[])}
 
 for t, pred in enumerate(trdata.kf):
     tr_X, tr_Y, te_X, te_Y = trdata.L[t][0],trdata.L[t][1],trdata.L[t][2],trdata.L[t][3]
-    trdata.D[t] = trdata.D[t-1].append(trdata.train_test_print('NN', t)) #, trdata.D[t-1][0], trdata.D[t-1][1]
-    print(trdata.D[0][1])
+    print(len(trdata.train_test_print('NN', t)[0]))
+    print(trdata.train_test_print('NN', t)[0])
+    trdata.D[t][0] = {trdata.D[t-1][0] + trdata.train_test_print('NN', t)[0]} #, trdata.D[t-1][0], trdata.D[t-1][1]
+    trdata.D[t][1] = np.hstack((trdata.D[t-1][1], trdata.train_test_print('NN', t)[1])) #, trdata.D[t-1][0], trdata.D[t-1][1]
+    print(len(trdata.D[0][1]))
 print('1111111111111111')
-print(trdata.D[4][1])
+# print(trdata.D[4][1])
 
 # print(pd.concat(pd.DataFrame([trdata.D[4][1]])))
 
