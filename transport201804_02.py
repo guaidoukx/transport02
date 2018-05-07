@@ -154,5 +154,5 @@ xgdata.overall = len(xgdata.data)
 xgdata.split_to_kfold(xgdata.overall, 5)
 xgdata.Train('XGBOOST', xgdata.L[0][0], xgdata.L[0][1])
 xgdata.XG()
-# print(xgdata.model.predict(xgb.DMatrix(np.array(example_te.drop(['A'],axis=1)))))
+print(xgdata.model.predict(xgb.DMatrix(np.array(example_te.drop(['A'],axis=1)))))
 
