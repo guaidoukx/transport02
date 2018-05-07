@@ -92,8 +92,8 @@ class ReadData(object):
     def printResult(self, model_name,tr_X, tr_Y, te_X, te_Y):
         if model_name == 'NN':
             result = self.model.evaluate(te_X, te_Y)
-            # print('\nNeural Network Training Finish & result')
-            # print('Test result loss:', result)
+            print('\nNeural Network Training Finish & result')
+            print('Test result loss:', result)
         tr_pred = self.model.predict(tr_X)
         te_pred = self.model.predict(te_X)
         
@@ -126,14 +126,6 @@ class ReadData(object):
         for t, pred in enumerate(self.kf):
             tr_X, tr_Y, te_X, te_Y = self.L[t][0], self.L[t][1], self.L[t][2], self.L[t][3]
             self.te_pred = self.model.predict(xgb.DMatrix(te_X)).tolist()
-            # print(type(self.te_pred))
-            # print(type(te_Y))
-            # print(len(self.te_pred))
-            # print(len(te_Y))
-            # print(self.te_pred)
-            # print(te_Y)
-            # print(self.te_pred.shape)
-            # print(te_Y.shape)
             print('\n-----%d iteration xgboost Training Finish & result-----' % (t + 1))
             print("Root Mean Squared Error: %.4f" % np.sqrt(mean_squared_error(te_Y, self.te_pred)))
             print('R2 score: %.4f' % r2_score(te_Y, self.te_pred))
