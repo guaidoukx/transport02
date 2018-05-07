@@ -81,11 +81,11 @@ class ReadData(object):
     
     def evaluation(self, Y, pred, way):
         if way =='RMSE':
-            print("Root Mean Squared Error: %.3f" % np.sqrt(mean_squared_error(Y, pred)))
+            print("Root Mean Squared Error: %.4f" % np.sqrt(mean_squared_error(Y, pred)))
         elif way == 'R2':
-            print('R2 score: %.5f' % r2_score(Y,pred))
+            print('R2 score: %.4f' % r2_score(Y,pred))
         elif way == 'MAD':
-            print("Mean Absolute Deviation: %.3f" % MAD(Y, pred) + "\r" )
+            print("Mean Absolute Deviation: %.4f" % MAD(Y, pred) + "\r" )
         else:
             print("Error Parameter! It must be 'RMSE','R2' or 'MAD'.")
     
@@ -116,7 +116,7 @@ class ReadData(object):
             self.printResult(model_name, tr_X, tr_Y, te_X, te_Y)
             self.D[t] = (self.D[t-1][0]+self.te_y, self.D[t-1][1]+self.te_pred)
             # print(self.D[t])
-        print('\n--- '+ model_name+' final resutl---')
+        print('\n--- '+ model_name+' final result---')
         self.evaluation(self.D[4][0], self.D[4][1],'RMSE')
         self.evaluation(self.D[4][0], self.D[4][1],'R2')
         # self.evaluation(np.ndarray(self.D[4][0]), np.ndarray(self.D[4][1]),'MAD')
@@ -135,29 +135,32 @@ class ReadData(object):
             # print(self.te_pred.shape)
             # print(te_Y.shape)
             print('\n-----%d iteration xgboost Training Finish & result-----' % (t + 1))
-            print("Root Mean Squared Error: %.10f" % np.sqrt(mean_squared_error(te_Y, self.te_pred)))
-            print('R2 score: %.10f' % r2_score(te_Y, self.te_pred))
+            print("Root Mean Squared Error: %.4f" % np.sqrt(mean_squared_error(te_Y, self.te_pred)))
+            print('R2 score: %.4f' % r2_score(te_Y, self.te_pred))
             self.D[t] = (self.D[t-1][0] + te_Y.tolist(), self.D[t-1][1] + self.te_pred)
-        print(len(self.D[4][0]), len(self.D[4][1]))
         
-        print("\n-----====final result===-----")
-        # print("final test Root Mean Squared Error: %.4f" % self.evaluation(self.D[4][0], self.D[4][1],'RMSE'))
-        print('final test R2 score: %.4f' % self.evaluation(self.D[4][0], self.D[4][1],'R2'))
+        print("\n-----====final xgboost result===-----")
+        # print("final test Root Mean Squared Error: %.4f" % self.evaluation(np.array(self.D[4][0]), np.array(self.D[4][1]),'RMSE'))
+        # print('final test R2 score: %.4f' % self.evaluation(np.array(self.D[4][0]), np.array(self.D[4][1]),'R2'))
+        # print('final test R2 score: %.4f' % self.evaluation(pd.Series(self.D[4][0]), pd.Series(self.D[4][1]),'R2'))
 
 
-# trdata = ReadData(example_trn, 'A')
-# trdata.overall = len(trdata.data)
-# trdata.split_to_kfold(trdata.overall, 5)
-# trdata.Train('NN', trdata.L[0][0],trdata.L[0][1])
-# trdata.train_test_print('NN')
-# print(trdata.model.predict(example_ten.drop(['A'],axis=1)))
-# trdata.Train('SVR', trdata.L[0][0],trdata.L[0][1])
-# trdata.train_test_print('SVR')
-# print(trdata.model.predict(example_ten.drop(['A'],axis=1)))
 
-xgdata = ReadData(example_tr, 'A')
-xgdata.overall = len(xgdata.data)
-xgdata.split_to_kfold(xgdata.overall, 5)
-xgdata.Train('XGBOOST', xgdata.L[0][0], xgdata.L[0][1])
-xgdata.XG()
+trdata = ReadData(example_trn, 'A')
+trdata.overall = len(trdata.data)
+trdata.split_to_kfold(trdata.overall, 5)
+trdata.Train('NN', trdata.L[0][0],trdata.L[0][1])
+trdata.train_test_print('NN')
+print(trdata.model.predict(example_ten.drop(['A'],axis=1)))
+trdata.Train('SVR', trdata.L[0][0],trdata.L[0][1])
+trdata.train_test_print('SVR')
+print(trdata.model.predict(example_ten.drop(['A'],axis=1)))
+
+
+# xgdata = ReadData(example_tr, 'A')
+# xgdata.overall = len(xgdata.data)
+# xgdata.split_to_kfold(xgdata.overall, 5)
+# xgdata.Train('XGBOOST', xgdata.L[0][0], xgdata.L[0][1])
+# xgdata.XG()
+# print(xgdata.model.predict(xgb.DMatrix(np.array(example_te.drop(['A'],axis=1)))))
 
