@@ -132,27 +132,27 @@ class ReadData(object):
             self.D[t] = (self.D[t-1][0] + te_Y.tolist(), self.D[t-1][1] + self.te_pred)
         
         print("\n-----====final xgboost result===-----")
-        # print("final test Root Mean Squared Error: %.4f" % self.evaluation(np.array(self.D[4][0]), np.array(self.D[4][1]),'RMSE'))
-        # print('final test R2 score: %.4f' % self.evaluation(np.array(self.D[4][0]), np.array(self.D[4][1]),'R2'))
+        self.evaluation(np.array(self.D[4][0]), np.array(self.D[4][1]),'RMSE')
+        self.evaluation(np.array(self.D[4][0]), np.array(self.D[4][1]),'R2')
         # print('final test R2 score: %.4f' % self.evaluation(pd.Series(self.D[4][0]), pd.Series(self.D[4][1]),'R2'))
 
 
 
-trdata = ReadData(example_trn, 'A')
-trdata.overall = len(trdata.data)
-trdata.split_to_kfold(trdata.overall, 5)
-trdata.Train('NN', trdata.L[0][0],trdata.L[0][1])
-trdata.train_test_print('NN')
-print(trdata.model.predict(example_ten.drop(['A'],axis=1)))
-trdata.Train('SVR', trdata.L[0][0],trdata.L[0][1])
-trdata.train_test_print('SVR')
-print(trdata.model.predict(example_ten.drop(['A'],axis=1)))
+# trdata = ReadData(example_trn, 'A')
+# trdata.overall = len(trdata.data)
+# trdata.split_to_kfold(trdata.overall, 5)
+# trdata.Train('NN', trdata.L[0][0],trdata.L[0][1])
+# trdata.train_test_print('NN')
+# print(trdata.model.predict(example_ten.drop(['A'],axis=1)))
+# trdata.Train('SVR', trdata.L[0][0],trdata.L[0][1])
+# trdata.train_test_print('SVR')
+# print(trdata.model.predict(example_ten.drop(['A'],axis=1)))
 
 
-# xgdata = ReadData(example_tr, 'A')
-# xgdata.overall = len(xgdata.data)
-# xgdata.split_to_kfold(xgdata.overall, 5)
-# xgdata.Train('XGBOOST', xgdata.L[0][0], xgdata.L[0][1])
-# xgdata.XG()
+xgdata = ReadData(example_tr, 'A')
+xgdata.overall = len(xgdata.data)
+xgdata.split_to_kfold(xgdata.overall, 5)
+xgdata.Train('XGBOOST', xgdata.L[0][0], xgdata.L[0][1])
+xgdata.XG()
 # print(xgdata.model.predict(xgb.DMatrix(np.array(example_te.drop(['A'],axis=1)))))
 
